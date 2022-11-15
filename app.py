@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_from_directory
 from werkzeug.utils import secure_filename
 import os
 import random
+import threading, time
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = r".\uploads"
@@ -15,10 +16,13 @@ def upload():
 @app.route('/uploader', methods = ['GET', 'POST'])
 def upload_file():
    if request.method == 'POST':
-      f = request.files['file']
-      upload_location = os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(generate_filename(f)))
-      f.save(upload_location)
-      return f'<a href = http://localhost:5000/{upload_location}>http://localhost:5000/{upload_location}</a>'
+        f = request.files['file']
+        upload_location = os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(generate_filename(f)))
+        f.save(upload_location)
+        # delete file after x time
+        later_function(upload_location, 1800)
+        #return link to file
+        return f'<a href = sethhannah.dev/{upload_location}>sethhannah.dev/{upload_location[2:]}</a>'
 
 @app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
@@ -30,8 +34,9 @@ def generate_filename(f):
     filename = hex(random.randint(1000000000, 100000000000))[2:]
     return filename + ext
 
-    
-    
+def later_function(f, t):
+    time.sleep(t)
+    os.remove(f)
 
 if __name__ == '__main__':
    app.run(debug = True)
