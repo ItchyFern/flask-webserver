@@ -22,7 +22,7 @@ def upload_file():
         # delete file after x time
         #later_function(upload_location, 1800)
         #return link to file
-        return f'<a href = {upload_location}>76.75.122.187:5000/{upload_location[2:]}</a>'
+        return render_template('download.html', value=request.url_root+upload_location[2:])
 
 @app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
