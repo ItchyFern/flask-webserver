@@ -5,7 +5,7 @@ import random
 import threading, time
 app = Flask(__name__)
 
-app.config['UPLOAD_FOLDER'] = r".\uploads"
+app.config['UPLOAD_FOLDER'] = r"./uploads"
 app.config['MAX_CONTENT_PATH'] = 1048576
 
 @app.route('/upload')
@@ -20,9 +20,9 @@ def upload_file():
         upload_location = os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(generate_filename(f)))
         f.save(upload_location)
         # delete file after x time
-        later_function(upload_location, 1800)
+        #later_function(upload_location, 1800)
         #return link to file
-        return f'<a href = sethhannah.dev/{upload_location}>sethhannah.dev/{upload_location[2:]}</a>'
+        return f'<a href = {upload_location}>76.75.122.187:5000/{upload_location[2:]}</a>'
 
 @app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
