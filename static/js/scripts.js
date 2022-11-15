@@ -11,11 +11,13 @@ function myFunction() {
     copyText.setSelectionRange(0, 99999); // For mobile devices
   
      // Copy the text inside the text field
-     try {
+     unsecuredCopyToClipboard(copyText.value);
+     /*try {
         navigator.clipboard.writeText(copyText.value);
       } catch (err) {
         unsecuredCopyToClipboard(copyText.value);
       }
+      */
     
   
     // Alert the copied text
