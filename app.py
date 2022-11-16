@@ -27,7 +27,7 @@ def upload_file():
             #return link to file
             return render_template('download.html', value=request.url_root+upload_location)
         else:
-            return 'please upload type [".mov", ".mp4", ".png", ".pdf", ".jpeg", ".jpg"]'
+            return 'please upload type [".mov", ".mp4", ".png", ".pdf", ".jpeg", ".jpg", ".mp3"]'
 
 @app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
@@ -47,7 +47,7 @@ def delete_uploads():
 
 def generate_filename(f):
     name, ext = os.path.splitext(f.filename)
-    if ext in [".mov", ".mp4", ".png", ".pdf", ".jpeg", ".jpg"]:
+    if ext in [".mov", ".mp4", ".png", ".pdf", ".jpeg", ".jpg", ".mp3"]:
         filename = hex(random.randint(1000000000, 100000000000))[2:]
         return filename + ext
     else:
