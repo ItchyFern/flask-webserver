@@ -18,12 +18,16 @@ def upload():
 def upload_file():
    if request.method == 'POST':
         f = request.files['file']
-        upload_location = os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(generate_filename(f)))
-        f.save(os.path.join(app.root_path, upload_location))
-        # delete file after x time
-        #later_function(upload_location, 1800)
-        #return link to file
-        return render_template('download.html', value=request.url_root+upload_location)
+        filename = generate_filename(f)
+        if filename:
+            upload_location = os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(filename))
+            f.save(os.path.join(app.root_path, upload_location))
+            # delete file after x time
+            #later_function(upload_location, 1800)
+            #return link to file
+            return render_template('download.html', value=request.url_root+upload_location)
+        else:
+            return 'please upload type [".mov", ".mp4", ".png", ".pdf", ".jpeg", ".jpg"]'
 
 @app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
@@ -43,9 +47,12 @@ def delete_uploads():
 
 def generate_filename(f):
     name, ext = os.path.splitext(f.filename)
-    filename = hex(random.randint(1000000000, 100000000000))[2:]
-    return filename + ext
+    if ext in [".mov", ".mp4", ".png", ".pdf", ".jpeg", ".jpg"]:
+        filename = hex(random.randint(1000000000, 100000000000))[2:]
+        return filename + ext
+    else:
+        return False
 
 if __name__ == '__main__':
-   app.run(host='192.168.1.10', port=80)
+   app.run(host='0.0.0.0', port=5000)
 
